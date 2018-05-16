@@ -1,1 +1,1 @@
-Application api should be accessible at: {{ .Values.service.url }}
+Application api should be accessible at:
