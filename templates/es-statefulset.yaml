@@ -3,7 +3,6 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: {{ .Release.Name }}-elasticsearch-logging
-
   labels:
     k8s-app: {{ .Release.Name }}-elasticsearch-logging
     kubernetes.io/cluster-service: "true"
@@ -29,7 +28,6 @@ rules:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-
   name: {{ .Release.Name }}-elasticsearch-logging
   labels:
     k8s-app: {{ .Release.Name }}-elasticsearch-logging
@@ -50,7 +48,6 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ .Release.Name }}-elasticsearch-logging
-
   labels:
     k8s-app: {{ .Release.Name }}-elasticsearch-logging
     version: v6.2.4
