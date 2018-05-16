@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kibana-logging-{{ .Release.Name }}
-  namespace: kube-system
+  name: {{ .Release.Name }}-kibana-logging
+
   labels:
-    k8s-app: kibana-logging-{{ .Release.Name }}
+    k8s-app: {{ .Release.Name }}-kibana-logging
     kubernetes.io/cluster-service: "true"
     addonmanager.kubernetes.io/mode: Reconcile
 spec:
   replicas: 1
   selector:
     matchLabels:
-      k8s-app: kibana-logging-{{ .Release.Name }}
+      k8s-app: {{ .Release.Name }}-kibana-logging
   template:
     metadata:
       labels:
-        k8s-app: kibana-logging-{{ .Release.Name }}
+        k8s-app: {{ .Release.Name }}-kibana-logging
     spec:
       containers:
-      - name: kibana-logging-{{ .Release.Name }}
+      - name: {{ .Release.Name }}-kibana-logging
         image: docker.elastic.co/kibana/kibana:6.2.4
         resources:
           # need more cpu upon initialization, therefore burstable class
@@ -28,7 +28,7 @@ spec:
             cpu: 100m
         env:
           - name: ELASTICSEARCH_URL
-            value: http://elasticsearch-logging-{{ .Release.Name }}:9200
+            value: {{ .Release.Name }}-http://elasticsearch-logging:9200
         ports:
         - containerPort: 5601
           name: ui

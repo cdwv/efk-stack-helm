@@ -1,8 +1,8 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: fluentd-es-config-v0.1.4-{{ .Release.Name }}
-  namespace: kube-system
+  name: {{ .Release.Name }}-fluentd-es-config-v0.1.4
+
   labels:
     addonmanager.kubernetes.io/mode: Reconcile
 data:

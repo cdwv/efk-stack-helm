@@ -1,13 +1,13 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: kibana-logging-{{ .Release.Name }}
+  name: {{ .Release.Name }}-kibana-logging
 spec:
   rules:
-  - host: kibana.{{ .Release.Name }}
-    http:
+  - host: {{ .Values.ingress.host }}
+    http:`
       paths:
       - path: /
         backend:
-          serviceName: kibana-logging-{{ .Release.Name }}
+          serviceName: {{ .Release.Name }}-kibana-logging
           servicePort: 5601
