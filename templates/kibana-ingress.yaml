@@ -5,7 +5,7 @@ metadata:
 spec:
   rules:
   - host: {{ .Values.ingress.host }}
-    http:`
+    http:
       paths:
       - path: /
         backend:
