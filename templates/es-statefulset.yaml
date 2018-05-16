@@ -38,7 +38,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: {{ .Release.Name }}-elasticsearch-logging
-
+  namespace: {{ .Release.Namespace }}
   apiGroup: ""
 roleRef:
   kind: ClusterRole
