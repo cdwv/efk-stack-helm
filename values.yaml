@@ -1,2 +1,12 @@
 ingress:
-  host: kibana.localhost
+  enabled: false
+  hosts:
+    - kibana.localhost
+  annotations: {}
+#    kubernetes.io/ingress.class: nginx
+#    kubernetes.io/tls-acme: "true"
+  tls: {}
+#  tls:
+#   - secretName: chart-example-tls
+#     hosts:
+#       - chart-example.local

@@ -14,7 +14,6 @@ metadata:
   labels:
     k8s-app: {{ .Release.Name }}-elasticsearch-logging
     kubernetes.io/cluster-service: "true"
-    addonmanager.kubernetes.io/mode: Reconcile
 rules:
 - apiGroups:
   - ""
@@ -32,7 +31,6 @@ metadata:
   labels:
     k8s-app: {{ .Release.Name }}-elasticsearch-logging
     kubernetes.io/cluster-service: "true"
-    addonmanager.kubernetes.io/mode: Reconcile
 subjects:
 - kind: ServiceAccount
   name: {{ .Release.Name }}-elasticsearch-logging
@@ -52,10 +50,9 @@ metadata:
     k8s-app: {{ .Release.Name }}-elasticsearch-logging
     version: v6.2.4
     kubernetes.io/cluster-service: "true"
-    addonmanager.kubernetes.io/mode: Reconcile
 spec:
   serviceName: {{ .Release.Name }}-elasticsearch-logging
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       k8s-app: {{ .Release.Name }}-elasticsearch-logging
@@ -69,7 +66,7 @@ spec:
     spec:
       serviceAccountName: {{ .Release.Name }}-elasticsearch-logging
       containers:
-      - image: k8s.gcr.io/elasticsearch:v6.2.4
+      - image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
         name: {{ .Release.Name }}-elasticsearch-logging
         resources:
           # need more cpu upon initialization, therefore burstable class

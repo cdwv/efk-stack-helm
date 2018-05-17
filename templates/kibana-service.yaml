@@ -4,10 +4,9 @@ metadata:
   name: {{ .Release.Name }}-kibana-logging
   labels:
     k8s-app: {{ .Release.Name }}-kibana-logging
-    kubernetes.io/cluster-service: "true"
-    addonmanager.kubernetes.io/mode: Reconcile
     kubernetes.io/name: "Kibana"
 spec:
+  type: NodePort
   ports:
   - port: 5601
     protocol: TCP
