@@ -1,10 +1,9 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: fluentd-es-config-v0.1.4-{{ .Release.Name }}
-  namespace: kube-system
+  name: {{ .Release.Name }}-fluentd-es-config-v0.1.4
   labels:
-    addonmanager.kubernetes.io/mode: Reconcile
+
 data:
   system.conf: |-
     <system>
@@ -335,7 +334,7 @@ data:
     <source>
       @id journald-container-runtime
       @type systemd
-      filters [{ "_SYSTEMD_UNIT": "{{ container_runtime }}.service" }]
+      filters [{ "_SYSTEMD_UNIT": "{{"{{"}} container_runtime {{"}}"}}.service" }]
       <storage>
         @type local
         persistent true
@@ -436,7 +435,7 @@ data:
       @type elasticsearch
       @log_level info
       include_tag_key true
-      host elasticsearch-logging
+      host {{ .Release.Name }}-elasticsearch-logging
       port 9200
       logstash_format true
       <buffer>

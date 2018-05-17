@@ -1,13 +1,26 @@
+{{- if .Values.ingress.enabled -}}
+{{- $releaseName := .Release.Name -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: kibana-logging-{{ .Release.Name }}
+  name: {{ .Release.Name }}-kibana-logging
+  annotations:
+    {{- range $key, $value := .Values.ingress.annotations }}
+      {{ $key }}: {{ $value | quote }}
+    {{- end }}
 spec:
   rules:
-  - host: kibana.{{ .Release.Name }}
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: kibana-logging-{{ .Release.Name }}
-          servicePort: 5601
+    {{- range $host := .Values.ingress.hosts }}
+    - host: {{ $host }}
+      http:
+        paths:
+        - path: /
+          backend:
+            serviceName: {{ $releaseName }}-kibana-logging
+            servicePort: 5601
+    {{- end -}}
+  {{- if .Values.ingress.tls }}
+  tls:
+  {{ toYaml .Values.ingress.tls | indent 4 }}
+    {{- end -}}
+{{- end -}}
