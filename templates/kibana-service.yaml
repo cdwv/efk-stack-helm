@@ -6,7 +6,7 @@ metadata:
     k8s-app: {{ .Release.Name }}-kibana-logging
     kubernetes.io/name: "Kibana"
 spec:
-  type: NodePort
+  type: {{ .Values.Service.type }}
   ports:
   - port: 5601
     protocol: TCP

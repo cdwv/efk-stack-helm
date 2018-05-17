@@ -1,5 +1,5 @@
 {{- if .Values.ingress.enabled -}}
-{{- $serviceName := .Release.Name -}}
+{{- $releaseName := .Release.Name -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -16,7 +16,7 @@ spec:
         paths:
         - path: /
           backend:
-            serviceName: {{ $serviceName }}-kibana-logging
+            serviceName: {{ $releaseName }}-kibana-logging
             servicePort: 5601
     {{- end -}}
   {{- if .Values.ingress.tls }}
