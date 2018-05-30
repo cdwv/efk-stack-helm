@@ -16,7 +16,7 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   path: /
   hosts:
-    - kibana.localhost
+    - kibana.dev
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:

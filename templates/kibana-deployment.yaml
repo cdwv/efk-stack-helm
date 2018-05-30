@@ -40,10 +40,12 @@ spec:
             httpGet:
               path: /
               port: kibana-ui
+            initialDelaySeconds: 45
           readinessProbe:
             httpGet:
               path: /
               port: kibana-ui
+            initialDelaySeconds: 40
           resources:
 {{ toYaml .Values.resources | indent 12 }}
     {{- with .Values.nodeSelector }}
