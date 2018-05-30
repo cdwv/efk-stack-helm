@@ -1,26 +1,38 @@
 {{- if .Values.ingress.enabled -}}
-{{- $releaseName := .Release.Name -}}
+{{- $fullName := include "fullname" . -}}
+{{- $ingressPath := .Values.ingress.path -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: {{ .Release.Name }}-kibana-logging
+  name: {{ $fullName }}
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ template "chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+{{- with .Values.ingress.annotations }}
   annotations:
-    {{- range $key, $value := .Values.ingress.annotations }}
-      {{ $key }}: {{ $value | quote }}
-    {{- end }}
+{{ toYaml . | indent 4 }}
+{{- end }}
 spec:
+{{- if .Values.ingress.tls }}
+  tls:
+  {{- range .Values.ingress.tls }}
+    - hosts:
+      {{- range .hosts }}
+        - {{ . }}
+      {{- end }}
+      secretName: {{ .secretName }}
+  {{- end }}
+{{- end }}
   rules:
-    {{- range $host := .Values.ingress.hosts }}
-    - host: {{ $host }}
+  {{- range .Values.ingress.hosts }}
+    - host: {{ . }}
       http:
         paths:
-        - path: /
-          backend:
-            serviceName: {{ $releaseName }}-kibana-logging
-            servicePort: 5601
-    {{- end -}}
-  {{- if .Values.ingress.tls }}
-  tls:
-  {{ toYaml .Values.ingress.tls | indent 4 }}
-    {{- end -}}
-{{- end -}}
+          - path: {{ $ingressPath }}
+            backend:
+              serviceName: {{ $fullName }}
+              servicePort: kibana-ui
+  {{- end }}
+{{- end }}
