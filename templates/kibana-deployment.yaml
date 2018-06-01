@@ -1,37 +1,31 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ template "fullname" . }}
+  name: {{ template "fullname.kibana" . }}
   labels:
-    app: {{ template "name" . }}
+    app: {{ template "name.kibana" . }}
     chart: {{ template "chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.kibana.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "name" . }}
+      app: {{ template "name.kibana" . }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "name" . }}
+        app: {{ template "name.kibana" . }}
         release: {{ .Release.Name }}
     spec:
       containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          resources:
-            # need more cpu upon initialization, therefore burstable class
-            limits:
-              cpu: 1000m
-            requests:
-              cpu: 100m
+        - name: {{ template "fullname.kibana" . }}
+          image: "{{ .Values.kibana.image.repository }}:{{ .Values.kibana.image.tag }}"
+          imagePullPolicy: {{ .Values.kibana.image.pullPolicy }}
           env:
             - name: ELASTICSEARCH_URL
-              value: http://{{ .Release.Name }}-elasticsearch-logging:9200
+              value: http://{{ .Release.Name }}-{{ .Values.elasticsearch.name }}:{{ .Values.elasticsearch.service.port }}
           ports:
             - name: kibana-ui
               containerPort: 5601
@@ -47,16 +41,16 @@ spec:
               port: kibana-ui
             initialDelaySeconds: 40
           resources:
-{{ toYaml .Values.resources | indent 12 }}
-    {{- with .Values.nodeSelector }}
+{{ toYaml .Values.kibana.resources | indent 12 }}
+    {{- with .Values.kibana.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
     {{- end }}
-    {{- with .Values.affinity }}
+    {{- with .Values.kibana.affinity }}
       affinity:
 {{ toYaml . | indent 8 }}
     {{- end }}
-    {{- with .Values.tolerations }}
+    {{- with .Values.kibana.tolerations }}
       tolerations:
 {{ toYaml . | indent 8 }}
     {{- end }}
