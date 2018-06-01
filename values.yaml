@@ -59,8 +59,8 @@ elasticsearch:
 
   affinity: {}
 
-fluentd-elasticsearch:
-  name: fluentd-elasticsearch
+fluentdElasticsearch:
+  name: fluentdElasticsearch
 
   image:
     repository: k8s.gcr.io/fluentd-elasticsearch

@@ -1,7 +1,7 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: {{ template "fullname.fluentd-elasticsearch" . }}-config
+  name: {{ template "fullname.fluentdElasticsearch" . }}-config
   labels:
 
 data:
@@ -435,7 +435,7 @@ data:
       @type elasticsearch
       @log_level info
       include_tag_key true
-      host {{ template "fullname.fluentd-elasticsearch" . }}
+      host {{ template "fullname.fluentdElasticsearch" . }}
       port 9200
       logstash_format true
       <buffer>

@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: {{ template "fullname.elasticsearch" . }}
   labels:
-    app: {{ template "name" . }}
+    app: {{ template "name.elasticsearch" . }}
     chart: {{ template "chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
