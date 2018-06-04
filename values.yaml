@@ -1,16 +1,13 @@
 kibana:
   name: kibana
   replicaCount: 1
-
   image:
     repository: docker.elastic.co/kibana/kibana
     tag: 6.2.4
     pullPolicy: IfNotPresent
-
   service:
     type: ClusterIP
     port: 5601
-
   ingress:
     enabled: false
     annotations: {}
@@ -23,59 +20,45 @@ kibana:
     #  - secretName: chart-example-tls
     #    hosts:
     #      - chart-example.local
-
   resources:
     limits:
       cpu: 1000m
     requests:
       cpu: 100m
-
   nodeSelector: {}
-
   tolerations: []
-
   affinity: {}
-
+#--------------------------------------------------------
 elasticsearch:
   name: elasticsearch
-
   image:
     repository: docker.elastic.co/elasticsearch/elasticsearch
     tag: 6.2.4
     pullPolicy: IfNotPresent
-
   service:
     type: ClusterIP
     port: 9200
-
   resources:
     limits:
       cpu: 1000m
     requests:
       cpu: 100m
   nodeSelector: {}
-
   tolerations: []
-
   affinity: {}
-
+#--------------------------------------------------------
 fluentdElasticsearch:
   name: fluentd-elasticsearch
-
   image:
     repository: k8s.gcr.io/fluentd-elasticsearch
     tag: v2.0.4
     pullPolicy: IfNotPresent
-
   resources:
     limits:
       memory: 500Mi
     requests:
       cpu: 100m
       memory: 200Mi
-
   nodeSelector: {}
-
   tolerations: []
-
   affinity: {}
