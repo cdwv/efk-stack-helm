@@ -80,17 +80,17 @@ spec:
           readOnly: true
         - name: config-volume
           mountPath: /etc/fluent/config.d
-          resources:
-{{ toYaml .Values.elasticsearch.resources | indent 12 }}
-    {{- with .Values.kibana.nodeSelector }}
+        resources:
+{{ toYaml .Values.fluentdElasticsearch.resources | indent 12 }}
+    {{- with .Values.fluentdElasticsearch.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
     {{- end }}
-    {{- with .Values.kibana.affinity }}
+    {{- with .Values.fluentdElasticsearch.affinity }}
       affinity:
 {{ toYaml . | indent 8 }}
     {{- end }}
-    {{- with .Values.kibana.tolerations }}
+    {{- with .Values.fluentdElasticsearch.tolerations }}
       tolerations:
 {{ toYaml . | indent 8 }}
     {{- end }}

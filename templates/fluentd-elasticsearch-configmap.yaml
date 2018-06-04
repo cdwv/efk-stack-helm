@@ -3,7 +3,8 @@ apiVersion: v1
 metadata:
   name: {{ template "fullname.fluentdElasticsearch" . }}-config
   labels:
-
+    app: {{ template "name.fluentdElasticsearch" . }}
+    release: {{ .Release.Name }}
 data:
   system.conf: |-
     <system>
