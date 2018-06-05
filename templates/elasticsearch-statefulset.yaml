@@ -1,4 +1,4 @@
-# RBAC authn and authz
+{{- if .Values.rbac.enabled -}}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -110,3 +110,4 @@ spec:
         name: {{ template "fullname.elasticsearch" . }}-init
         securityContext:
           privileged: true
+{{- end }}

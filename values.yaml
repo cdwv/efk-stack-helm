@@ -1,3 +1,6 @@
+rbac:
+  enabled: false
+#--------------------------------------------------------
 kibana:
   name: kibana
   replicaCount: 1
