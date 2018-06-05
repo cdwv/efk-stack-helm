@@ -23,12 +23,6 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          resources:
-            # need more cpu upon initialization, therefore burstable class
-            limits:
-              cpu: 1000m
-            requests:
-              cpu: 100m
           env:
             - name: ELASTICSEARCH_URL
               value: http://{{ .Release.Name }}-elasticsearch-logging:9200
