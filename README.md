@@ -1,9 +1,85 @@
+# Helm Chart for Elastic-Fluentd-Kibana logging
+
+* Installs a complete logging solution for Kubernetes nodes, based on this [Kubernetes Addon](https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/fluentd-elasticsearch)
+
+## TL;DR;
+
+```console
+$ git clone https://git.cdwv.pl/kubernetes/charts/efk-stack
+$ cd efk-stack
+$ helm install .
+```
+
+## Installing the Chart
+
+To install the chart with the release name `my-release`:
+
+```console
+$ helm install --name my-release .
+```
+
+## Uninstalling the Chart
+
+To uninstall/delete the my-release deployment:
+
+```console
+$ helm delete my-release
+```
+
+The command removes all the Kubernetes components associated with the chart and deletes the release.
+
+
 ## Configuration
 
-The following tables lists the configurable parameters and their default values.
+### Kibana
+
+| Parameter                  | Description                         | Default                                                 |
+|----------------------------|-------------------------------------|---------------------------------------------------------|
+| `rbac.enabled` | Enables RBAC | `false` |
+| `kibana.replicaCount`                 | Number of Kibana nodes | `1` |
+| `kibana.image.repository`         | Image repository | `docker.elastic.co/kibana/kibana` |
+| `kibana.image.tag`                | Image tag. | `6.2.4`|
+| `kibana.image.pullPolicy`         | Image pull policy | `IfNotPresent` |
+| `kibana.service.type`             | Kubernetes service type | `ClusterIP` |
+| `kibana.service.port`             | Kubernetes port where service is exposed| `5601` |
+| `kibana.ingress.enabled`          | Enables Ingress | `false` |
+| `kibana.ingress.annotations`      | Ingress annotations | `{}` |
+| `kibana.ingress.path`           | Custom path                       | `/`
+| `kibana.ingress.hosts`            | Ingress accepted hostnames | `[kibana.dev]` |
+| `kibana.ingress.tls`              | Ingress TLS configuration | `[]` |
+| `kibana.resources.limits.cpu`                | CPU resource limits | `1000m` |
+| `kibana.resources.requests.cpu`                | CPU resource requests | `100m` |
+| `kibana.nodeSelector`             | Node labels for pod assignment | `{}` |
+| `kibana.tolerations`              | Toleration labels for pod assignment | `[]` |
+| `kibana.affinity`                 | Affinity settings for pod assignment | `{}` |
+| `elasticsearch.replicaCount`                 | Number of ElasticSearch nodes | `1` |
+| `elasticsearch.image.repository`         | Image repository | `docker.elastic.co/elasticsearch/elasticsearch` |
+| `elasticsearch.image.tag`                | Image tag. | `6.2.4`|
+| `elasticsearch.image.pullPolicy`         | Image pull policy | `IfNotPresent` |
+| `elasticsearch.service.type`             | Kubernetes service type | `ClusterIP` |
+| `elasticsearch.service.port`             | Kubernetes port where service is exposed| `9200` |
+| `elasticsearch.resources.limits.cpu`                | CPU resource limits | `1000m` |
+| `elasticsearch.resources.requests.cpu`                | CPU resource requests | `100m` |
+| `elasticsearch.nodeSelector`             | Node labels for pod assignment | `{}` |
+| `elasticsearch.tolerations`              | Toleration labels for pod assignment | `[]` |
+| `elasticsearch.affinity`                 | Affinity settings for pod assignment | `{}` |
+| `fluentdElasticsearch.replicaCount`                 | Number of ElasticSearch nodes | `1` |
+| `fluentdElasticsearch.image.repository`         | Image repository | `k8s.gcr.io/fluentd-elasticsearch` |
+| `fluentdElasticsearch.image.tag`                | Image tag. | `v2.0.4`|
+| `fluentdElasticsearch.image.pullPolicy`         | Image pull policy | `IfNotPresent` |
+| `fluentdElasticsearch.service.type`             | Kubernetes service type | `ClusterIP` |
+| `fluentdElasticsearch.service.port`             | Kubernetes port where service is exposed| `9200` |
+| `fluentdElasticsearch.resources.limits.memory`                | Mem resource limits | `500Mi` |
+| `fluentdElasticsearch.resources.requests.cpu`                | CPU resource requests | `100m` |
+| `fluentdElasticsearch.resources.requests.memory`                | Mem resource requests | `200Mi` |
+| `fluentdElasticsearch.nodeSelector`             | Node labels for pod assignment | `{}` |
+| `fluentdElasticsearch.tolerations`              | Toleration labels for pod assignment | `[]` |
+| `fluentdElasticsearch.affinity`                 | Affinity settings for pod assignment | `{}` |
 
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `rbac.enabled` | Role based access system features | false |
-| `kibana.ingress.enabled` | Kibana ingress | false |
+# TODO add these:
+| `persistence.enabled`      | Use persistent volume to store data | `false` |
+| `persistence.size`         | Size of persistent volume claim | `10Gi` |
+| `persistence.existingClaim`| Use an existing PVC to persist data | `nil` |
+| `persistence.storageClassName` | Type of persistent volume claim | `nil` |
+| `persistence.accessModes`  | Persistence access modes | `[]` |
