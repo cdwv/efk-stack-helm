@@ -1,0 +1,113 @@
+{{- if .Values.rbac.enabled -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ template "fullname.elasticsearch" . }}
+  labels:
+    app: {{ template "name.elasticsearch" . }}
+    release: {{ .Release.Name }}
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ template "fullname.elasticsearch" . }}
+  labels:
+    app: {{ template "name.elasticsearch" . }}
+    release: {{ .Release.Name }}
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - "services"
+  - "namespaces"
+  - "endpoints"
+  verbs:
+  - "get"
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ template "fullname.elasticsearch" . }}
+  labels:
+    app: {{ template "name.elasticsearch" . }}
+    release: {{ .Release.Name }}
+subjects:
+- kind: ServiceAccount
+  name: {{ template "fullname.elasticsearch" . }}
+  namespace: {{ .Release.Namespace }}
+  apiGroup: ""
+roleRef:
+  kind: ClusterRole
+  name: {{ template "fullname.elasticsearch" . }}
+  apiGroup: ""
+---
+# Elasticsearch deployment itself
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ template "fullname.elasticsearch" . }}
+  labels:
+    app: {{ template "name.elasticsearch" . }}
+    chart: {{ template "chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  serviceName: {{ template "fullname.elasticsearch" . }}
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "name.elasticsearch" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "name.elasticsearch" . }}
+        release: {{ .Release.Name }}
+    spec:
+      serviceAccountName: {{ template "fullname.elasticsearch" . }}
+      containers:
+        - name: {{ template "fullname.elasticsearch" . }}
+          image: "{{ .Values.elasticsearch.image.repository }}:{{ .Values.elasticsearch.image.tag }}"
+          imagePullPolicy: {{ .Values.elasticsearch.image.pullPolicy }}
+          ports:
+          - containerPort: {{ .Values.elasticsearch.service.port }}
+            name: db
+            protocol: TCP
+          - containerPort: 9300
+            name: transport
+            protocol: TCP
+          volumeMounts:
+          - name: {{ template "fullname.elasticsearch" . }}
+            mountPath: /data
+          env:
+          - name: "NAMESPACE"
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          resources:
+{{ toYaml .Values.elasticsearch.resources | indent 12 }}
+    {{- with .Values.elasticsearch.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.elasticsearch.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.elasticsearch.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+      volumes:
+      - name: {{ template "fullname.elasticsearch" . }}
+        emptyDir: {}
+      # Elasticsearch requires vm.max_map_count to be at least 262144.
+      # If your OS already sets up this number to a higher value, feel free
+      # to remove this init container.
+      initContainers:
+      - image: alpine:3.6
+        command: ["/sbin/sysctl", "-w", "vm.max_map_count=262144"]
+        name: {{ template "fullname.elasticsearch" . }}-init
+        securityContext:
+          privileged: true
+{{- end }}
