@@ -1,14 +1,27 @@
+replicaCount: 1
+
+service:
+  type: ClusterIP
+  port: 5601
+
+image:
+  repository: docker.elastic.co/kibana/kibana
+  tag: 6.2.4
+  pullPolicy: IfNotPresent
+
 ingress:
   enabled: false
-  hosts:
-    - kibana.localhost
   annotations: {}
-#    kubernetes.io/ingress.class: nginx
-#    kubernetes.io/tls-acme: "true"
-  tls: {}
-#  tls:
-#   - secretName: chart-example-tls
-#     hosts:
-#       - chart-example.local
-service:
-  type: NodePort
+  path: /
+  hosts:
+    - kibana.dev
+  tls: []
+
+resources: {}
+
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

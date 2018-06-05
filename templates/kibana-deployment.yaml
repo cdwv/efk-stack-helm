@@ -1,33 +1,59 @@
-apiVersion: apps/v1
+apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-kibana-logging
+  name: {{ template "fullname" . }}
   labels:
-    k8s-app: {{ .Release.Name }}-kibana-logging
-    kubernetes.io/cluster-service: "true"
+    app: {{ template "name" . }}
+    chart: {{ template "chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      k8s-app: {{ .Release.Name }}-kibana-logging
+      app: {{ template "name" . }}
+      release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        k8s-app: {{ .Release.Name }}-kibana-logging
+        app: {{ template "name" . }}
+        release: {{ .Release.Name }}
     spec:
       containers:
-      - name: {{ .Release.Name }}-kibana-logging
-        image: docker.elastic.co/kibana/kibana:6.2.4
-        resources:
-          # need more cpu upon initialization, therefore burstable class
-          limits:
-            cpu: 1000m
-          requests:
-            cpu: 100m
-        env:
-          - name: ELASTICSEARCH_URL
-            value: http://{{ .Release.Name }}-elasticsearch-logging:9200
-        ports:
-        - containerPort: 5601
-          name: ui
-          protocol: TCP
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: ELASTICSEARCH_URL
+              value: http://{{ .Release.Name }}-elasticsearch-logging:9200
+          ports:
+            - name: kibana-ui
+              containerPort: 5601
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: kibana-ui
+            initialDelaySeconds: 45
+          readinessProbe:
+            httpGet:
+              path: /
+              port: kibana-ui
+            initialDelaySeconds: 40
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+
+
+

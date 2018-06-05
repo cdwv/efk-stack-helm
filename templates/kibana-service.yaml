@@ -1,15 +1,19 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-kibana-logging
+  name: {{ template "fullname" . }}
   labels:
-    k8s-app: {{ .Release.Name }}-kibana-logging
-    kubernetes.io/name: "Kibana"
+    app: {{ template "name" . }}
+    chart: {{ template "chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
   type: {{ .Values.service.type }}
   ports:
-  - port: 5601
-    protocol: TCP
-    targetPort: ui
+    - port: {{ .Values.service.port }}
+      targetPort: kibana-ui
+      protocol: TCP
+      name: kibana-ui
   selector:
-    k8s-app: {{ .Release.Name }}-kibana-logging
+    app: {{ template "name" . }}
+    release: {{ .Release.Name }}
