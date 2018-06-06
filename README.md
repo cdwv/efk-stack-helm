@@ -77,9 +77,6 @@ The command removes all the Kubernetes components associated with the chart and 
 | `fluentdElasticsearch.affinity`                 | Affinity settings for pod assignment | `{}` |
 
 
-# TODO add these:
-| `persistence.enabled`      | Use persistent volume to store data | `false` |
-| `persistence.size`         | Size of persistent volume claim | `10Gi` |
-| `persistence.existingClaim`| Use an existing PVC to persist data | `nil` |
-| `persistence.storageClassName` | Type of persistent volume claim | `nil` |
-| `persistence.accessModes`  | Persistence access modes | `[]` |
+# TODO
+
+* [ ] - Add persistence to elasticsearch (possibly Kibana as well)
