@@ -80,3 +80,5 @@ The command removes all the Kubernetes components associated with the chart and 
 # TODO
 
 * [ ] - Add persistence to elasticsearch (possibly Kibana as well)
+* [ ] - Make sure all [technical requirements](https://github.com/kubernetes/charts/blob/master/CONTRIBUTING.md#technical-requirements) for a PR to kubernetes/charts are met
+* [ ] - Submit as a PR to kubernetes/charts
