@@ -5,8 +5,8 @@
 ## TL;DR;
 
 ```console
-$ git clone https://git.cdwv.pl/kubernetes/charts/efk-stack
-$ cd efk-stack
+$ git clone https://github.com/cdwv/efk-stack-helm
+$ cd efk-stack-helm
 $ helm install .
 ```
 
