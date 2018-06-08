@@ -436,7 +436,7 @@ data:
       @type elasticsearch
       @log_level info
       include_tag_key true
-      host {{ template "fullname.fluentdElasticsearch" . }}
+      host {{ template "fullname.elasticsearch" . }}
       port 9200
       logstash_format true
       <buffer>
