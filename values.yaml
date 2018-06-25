@@ -54,7 +54,7 @@ fluentdElasticsearch:
   name: fluentd-elasticsearch
   image:
     repository: k8s.gcr.io/fluentd-elasticsearch
-    tag: v2.0.4
+    tag: v2.1.0
     pullPolicy: IfNotPresent
   resources:
     limits:
@@ -65,3 +65,4 @@ fluentdElasticsearch:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  dockerContainersPath: /var/lib/docker/containers
