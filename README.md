@@ -75,7 +75,7 @@ The command removes all the Kubernetes components associated with the chart and 
 | `fluentdElasticsearch.nodeSelector`             | Node labels for pod assignment | `{}` |
 | `fluentdElasticsearch.tolerations`              | Toleration labels for pod assignment | `[]` |
 | `fluentdElasticsearch.affinity`                 | Affinity settings for pod assignment | `{}` |
-| `fluentdElasticsearch.dockerContainersPath      | Path to docker containers on the node | `"/var/lib/docker/containers"` |
+| `fluentdElasticsearch.dockerContainersPath`      | Path to docker containers on the node | `"/var/lib/docker/containers"` |
 
 
 # TODO
