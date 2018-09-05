@@ -53,7 +53,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   serviceName: {{ template "fullname.elasticsearch" . }}
-  replicas: 1
+  replicas: {{ .Values.elasticsearch.replicaCount }}
   selector:
     matchLabels:
       app: {{ template "name.elasticsearch" . }}

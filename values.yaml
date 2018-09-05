@@ -34,6 +34,7 @@ kibana:
 #--------------------------------------------------------
 elasticsearch:
   name: elasticsearch
+  replicaCount: 1
   image:
     repository: docker.elastic.co/elasticsearch/elasticsearch
     tag: 6.2.4
