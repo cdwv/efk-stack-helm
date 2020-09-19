@@ -1,5 +1,5 @@
 rbac:
-  enabled: false
+  enabled: true
 #--------------------------------------------------------
 kibana:
   name: kibana
