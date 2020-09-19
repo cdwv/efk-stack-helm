@@ -2,3 +2,4 @@ apiVersion: v1
 description: elasticsearch logging chart
 name: elasticsearch-fluentd-kibana
 icon: https://gitlab.com/gitlab-com/gitlab-artwork/raw/master/logo/logo-square.png
+version: 1.0
